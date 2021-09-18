@@ -1,6 +1,6 @@
 import superteste from "supertest";
-import app from "../src/app";
-const request = superteste(app);
+import ServerConfig from "../src/app";
+const request = superteste(new ServerConfig().getApp());
 
 describe("Testando o Home controller", () => {
     it("Teste do metodo home", async () => {
