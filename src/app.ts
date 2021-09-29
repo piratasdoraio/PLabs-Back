@@ -6,20 +6,27 @@ import  swaggerDocument from "./swagger.json";
 //import { OpenAPIV3 } from "express-openapi-validator/dist/framework/types";
 
 export default class ServerConfig {
-    
+    private static serverInstance: ServerConfig;
     private app: Application;
     
-    constructor() {
+    private constructor() {
         this.app = express();
         this.routeConfig();
         this.swaggerDocumentation();
     }
 
+    static getServerInstance(): ServerConfig {
+        if(!ServerConfig.serverInstance) {
+            ServerConfig.serverInstance = new ServerConfig();
+        }
+        return ServerConfig.serverInstance;
+    };
+
     getApp(): Application {
         return this.app;
     }
 
-    async swaggerDocumentation(): Promise<void> {
+    private async swaggerDocumentation(): Promise<void> {
         this.app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
         //this.app.use(OpenApiValidator.middleware({
         //    apiSpec: swaggerDocument as OpenAPIV3.Document,
@@ -28,7 +35,7 @@ export default class ServerConfig {
         //}));
     }
 
-    routeConfig(): void {
+    private routeConfig(): void {
         this.app.use(express.urlencoded({extended: false}));
         this.app.use(express.json());
         this.app.use(routes);

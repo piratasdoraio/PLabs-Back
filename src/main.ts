@@ -1,6 +1,6 @@
 import ServerConfig from "./app";
 
-const main = new ServerConfig();
+const main = ServerConfig.getServerInstance();
 
 main.server();
 
