@@ -30,8 +30,6 @@ public class Usuario {
     @Column(nullable = false)
     private String nome;
     @Column(nullable = false)
-    private Cargo cargo;
-    @Column(nullable = false)
     @CreationTimestamp
     private OffsetDateTime criado;
     @Column(nullable = false)
