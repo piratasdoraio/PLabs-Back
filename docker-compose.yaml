@@ -19,7 +19,7 @@ services:
   bni_framedesk_dev:
     container_name: bni-framedesk-dev
     ports:
-      - "9080:9080"
+      - "9092:9092"
     restart: always
     environment:
       DB_HOST_TEST: "db_test"
