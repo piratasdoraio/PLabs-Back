@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  db_test:
+    container_name: db-test
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: test_db
+      POSTGRES_USER: test_db
+      POSTGRES_PASSWORD: test_db
+    # healthcheck:
+    #   test: ["CMD-SHELL", "pg_isready -U postgres"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
+    build:
+      context: .dockerfiles/postgres
+      dockerfile: postgres
+  bni_framedesk_dev:
+    container_name: bni-framedesk-dev
+    ports:
+      - "9080:9080"
+    restart: always
+    environment:
+      DB_HOST_TEST: "db_test"
+      DB_PORT_TEST: 5432
+      DB_DATABASE_TEST: "test_db"
+      DB_USERNAME_TEST: "test_db"
+      DB_PASSWORD_TEST: "test_db"
+    build:
+      context: .
+      dockerfile: dockerfile
