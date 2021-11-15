@@ -17,11 +17,17 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "grupos")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "grupos")
 @SQLDelete(sql = "update grupos set deletado = TRUE where id =?")
 @Where(clause = "deletado = FALSE")
 public class Grupo {
@@ -46,4 +52,8 @@ public class Grupo {
 
     @Column(nullable = false)
     private Boolean deletado = Boolean.FALSE;
+
+    public Grupo(String nome){
+        this.nome = nome;
+    }
 }

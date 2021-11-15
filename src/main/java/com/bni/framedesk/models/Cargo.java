@@ -27,14 +27,18 @@ public class Cargo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
+
     @Column(nullable = false)
     private String nome;
+
     @Column(nullable = false)
     @CreationTimestamp
     private OffsetDateTime criado;
+
     @Column(nullable = false)
     @UpdateTimestamp
     private OffsetDateTime atualizado;
+    
     @Column(nullable = false)
     private Boolean deletado = Boolean.FALSE;
 }

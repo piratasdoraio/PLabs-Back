@@ -18,8 +18,8 @@ import org.hibernate.annotations.Where;
 import lombok.Data;
 
 @Entity
-@Table(name = "usuarios")
 @Data
+@Table(name = "usuarios")
 @SQLDelete(sql = "update usuarios set deletado = TRUE where id =?")
 @Where(clause = "deletado = FALSE")
 public class Usuario {
