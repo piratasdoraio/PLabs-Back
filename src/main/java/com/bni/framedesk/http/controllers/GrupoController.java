@@ -5,18 +5,18 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
-import javax.websocket.server.PathParam;
+import javax.validation.Valid;
 
 import com.bni.framedesk.http.requests.grupo.AtualizarGrupoRequest;
 import com.bni.framedesk.http.requests.grupo.SalvarGrupoRequest;
 import com.bni.framedesk.http.responses.GrupoResponse;
 import com.bni.framedesk.models.Grupo;
-import com.bni.framedesk.models.mappers.GrupoMapper;
 import com.bni.framedesk.services.grupo.GrupoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,8 +37,6 @@ public class GrupoController {
     @Autowired
     private GrupoService grupoService;
 
-    private GrupoMapper grupoMapper = new GrupoMapper();
-
     public GrupoController(GrupoService grupoService) {
         this.grupoService = grupoService;
     }
@@ -50,7 +48,7 @@ public class GrupoController {
     @ResponseBody
     public ResponseEntity<List<GrupoResponse>> listar() throws IOException {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(grupoMapper.toResponse(grupoService.listar()));
+            return ResponseEntity.status(HttpStatus.OK).body(grupoService.listar());
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getLocalizedMessage());
         } catch (Exception e) {
@@ -63,9 +61,9 @@ public class GrupoController {
             response = Grupo.class)
     @GetMapping(path = "/grupos/{id}")
     @ResponseBody
-    public ResponseEntity<GrupoResponse> buscar(@PathVariable UUID id) throws IOException {
+    public ResponseEntity<GrupoResponse> buscar(@Validated @PathVariable UUID id) throws IOException {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(grupoMapper.toResponse(grupoService.buscar(id)));
+            return ResponseEntity.status(HttpStatus.OK).body(grupoService.buscar(id));
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getLocalizedMessage());
         } catch (Exception e) {
@@ -78,9 +76,9 @@ public class GrupoController {
             response = Grupo.class)
     @PostMapping(path = "/grupos")
     @ResponseBody
-    public ResponseEntity<GrupoResponse> salvar(@RequestBody SalvarGrupoRequest request) throws IOException {
+    public ResponseEntity<GrupoResponse> salvar(@Valid @RequestBody SalvarGrupoRequest request) throws IOException {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(grupoMapper.toResponse(grupoService.salvar(grupoMapper.toModelSave(request))));
+            return ResponseEntity.status(HttpStatus.OK).body(grupoService.salvar(request));
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getLocalizedMessage());
         } catch (Exception e) {
@@ -93,9 +91,9 @@ public class GrupoController {
             response = Grupo.class)
     @PutMapping(path = "/grupos/{id}")
     @ResponseBody
-    public ResponseEntity<GrupoResponse> atualizar(@RequestBody AtualizarGrupoRequest request, @PathVariable UUID id) throws IOException {
+    public ResponseEntity<GrupoResponse> atualizar(@Valid @RequestBody AtualizarGrupoRequest request, @Validated @PathVariable UUID id) throws IOException {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(grupoMapper.toResponse(grupoService.atualizar(grupoMapper.toModelUpdate(request))));
+            return ResponseEntity.status(HttpStatus.OK).body(grupoService.atualizar(request, id));
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getLocalizedMessage());
         } catch (Exception e) {
@@ -108,9 +106,9 @@ public class GrupoController {
             response = Grupo.class)
     @DeleteMapping(path = "/grupos/{id}")
     @ResponseBody
-    public ResponseEntity<GrupoResponse> deletar(@PathVariable UUID id) throws IOException {
+    public ResponseEntity<GrupoResponse> deletar(@Validated @PathVariable UUID id) throws IOException {
         try {
-            grupoService.deletar(id)
+            grupoService.deletar(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getLocalizedMessage());
