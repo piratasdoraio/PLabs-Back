@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//AVISO: TESTE DE UMA IDEIA, NÃO UTILIZE ISSO AQUI POR AGORA
 public class ReflectMapper<FROM, TO> {
     public TO convert(FROM from, TO to) {
         Map<String, Field> fieldsRequest = toMap(from.getClass().getFields());
