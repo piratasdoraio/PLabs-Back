@@ -3,8 +3,9 @@ package com.bni.framedesk.services.grupo;
 import java.util.List;
 import java.util.UUID;
 
-import com.bni.framedesk.models.Card;
-import com.bni.framedesk.models.Grupo;
+import com.bni.framedesk.http.requests.grupo.AtualizarGrupoRequest;
+import com.bni.framedesk.http.requests.grupo.SalvarGrupoRequest;
+import com.bni.framedesk.http.responses.GrupoResponse;
 import com.bni.framedesk.repositories.GrupoRepository;
 import com.bni.framedesk.services.grupo.interfaces.IGrupoService;
 
@@ -18,25 +19,25 @@ public class GrupoService implements IGrupoService {
     private GrupoRepository grupoRepository;
 
     @Override
-    public List<Grupo> listar() {
+    public List<GrupoResponse> listar() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Grupo buscar(UUID id) {
+    public GrupoResponse buscar(UUID id) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Grupo salvar(Grupo grupo) {
+    public GrupoResponse salvar(SalvarGrupoRequest grupo) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Grupo atualizar(Grupo grupo) {
+    public GrupoResponse atualizar(AtualizarGrupoRequest grupo, UUID id) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -46,6 +47,8 @@ public class GrupoService implements IGrupoService {
         // TODO Auto-generated method stub
         
     }
+
+
 
     
 
