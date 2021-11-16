@@ -13,6 +13,7 @@ import com.bni.framedesk.services.grupo.interfaces.IGrupoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class GrupoService implements IGrupoService {
@@ -23,36 +24,39 @@ public class GrupoService implements IGrupoService {
     private GrupoMapper grupoMapper = new GrupoMapper();
 
     @Override
+    @Transactional(readOnly = true)
     public List<GrupoResponse> listar() {
-        // TODO Auto-generated method stub
-        return null;
+        List<Grupo> grupos = grupoRepository.findAll();
+        return grupoMapper.toResponse(grupos);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public GrupoResponse buscar(UUID id) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public GrupoResponse salvar(SalvarGrupoRequest request) {
-        Grupo grupo = grupoMapper.toModelSave(request);
-        //CODIGO
+        Grupo grupo = grupoRepository.findById(id).get();
         return grupoMapper.toResponse(grupo);
     }
 
     @Override
-    public GrupoResponse atualizar(AtualizarGrupoRequest grupo, UUID id) {
-        // TODO Auto-generated method stub
-        return null;
+    @Transactional
+    public GrupoResponse salvar(SalvarGrupoRequest request) {
+        Grupo grupo = grupoMapper.toModelSave(request);
+        grupo = grupoRepository.save(grupo);
+        return grupoMapper.toResponse(grupo);
+    }
+
+    @Override
+    @Transactional
+    public GrupoResponse atualizar(AtualizarGrupoRequest request, UUID id) {
+        Grupo grupo = grupoMapper.toModelUpdate(request);
+        grupo.setId(id);
+        if (grupoRepository.existsById(id)) grupo = grupoRepository.save(grupo);
+        return grupoMapper.toResponse(grupo);
     }
 
     @Override
     public void deletar(UUID id) {
-        // TODO Auto-generated method stub
-        
+        grupoRepository.deleteById(id);
     }
-
-    
 
 }
