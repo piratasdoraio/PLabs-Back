@@ -6,8 +6,10 @@ import java.util.UUID;
 import com.bni.framedesk.http.requests.grupo.AtualizarGrupoRequest;
 import com.bni.framedesk.http.requests.grupo.SalvarGrupoRequest;
 import com.bni.framedesk.http.responses.GrupoResponse;
+
 import com.bni.framedesk.models.Grupo;
 import com.bni.framedesk.models.mappers.GrupoMapper;
+
 import com.bni.framedesk.repositories.GrupoRepository;
 import com.bni.framedesk.services.grupo.interfaces.IGrupoService;
 
@@ -58,5 +60,4 @@ public class GrupoService implements IGrupoService {
     public void deletar(UUID id) {
         grupoRepository.deleteById(id);
     }
-
 }
