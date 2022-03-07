@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  content   String?
+  author    User     @relation(fields: [userId], references: [id])
+  card      Card     @relation(fields: [cardId], references: [id])
+  userId    Int
+  cardId    Int
+}
+
+model User {
+  id        Int            @id @default(autoincrement())
+  email     String         @unique
+  name      String
+  password  String
+  teams     UsersOnTeams[]
+  comments  Comment[]
+  createdAt DateTime       @default(now())
+}
+
+model Column {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  cards     Card[]
+}
+
+model Card {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  column    Column    @relation(fields: [groupId], references: [id])
+  comments  Comment[]
+  createdAt DateTime  @default(now())
+  groupId   Int
+}
+
+model Team {
+  id        Int            @id @default(autoincrement())
+  name      String         @unique
+  users     UsersOnTeams[]
+  createdAt DateTime       @default(now())
+}
+
+model UsersOnTeams {
+  team   Team @relation(fields: [teamId], references: [id])
+  teamId Int
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  @@id([teamId, userId])
+}
