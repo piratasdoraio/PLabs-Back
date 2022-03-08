@@ -1,13 +1,16 @@
 import { Injectable } from "@nestjs/common";
-import PrismaRepository from "src/repositories/prisma-repository";
+import PrismaService from "src/repositories/prisma.service";
 import { User } from '@prisma/client';
 import CreateUserDto from "src/dtos/create-user.dto";
 import UserDto from "src/dtos/user.dto";
+import BCryptPasswordEncoder from "src/security/bcrypt.service";
 
 @Injectable()
 export default class UserService {
 
-    constructor(private readonly prisma: PrismaRepository) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly passwordEncoder: BCryptPasswordEncoder) {}
 
     async createUser(createUserDto: CreateUserDto): Promise<UserDto | null> {
         if (!createUserDto) {
@@ -15,14 +18,12 @@ export default class UserService {
         }
 
         try {
-            
-            const userDto = new UserDto(); 
-
+            const hashedPassword = await this.passwordEncoder.encode(createUserDto.password);
             const user = await this.prisma.user.create({
                 data: {
                     email: createUserDto.email,
                     name: createUserDto.name,
-                    password: createUserDto.password,
+                    password: hashedPassword,
                     createdAt: new Date(Date.now())
                 }
             });
@@ -37,6 +38,31 @@ export default class UserService {
     async findAllUsers(): Promise<User[]> {
         return await this.prisma.user.findMany();
     }
+
+    async findUserById(id: number): Promise<UserDto | null> {
+        if(!id) {
+            return null;
+        }
+        const user = await this.prisma.user.findUnique({where: {id}});
+        if(!user) {
+            return null;
+        }
+        return this.mapToDto(user);
+    }
+
+    async deleteUserById(id: number): Promise<number | null> {
+        if(!id) {
+            return null;
+        }
+        const deletedUser = await this.prisma.user.delete({where: {id}});
+
+        if(!deletedUser) {
+            return null;
+        }
+
+        return deletedUser.id;
+    }
+
 
     private mapToDto(user: User): UserDto {
         
