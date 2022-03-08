@@ -21,6 +21,13 @@ model Comment {
   cardId    Int
 }
 
+model Group {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  name      String   @unique
+  columns   Column[]
+}
+
 model User {
   id        Int            @id @default(autoincrement())
   email     String         @unique
@@ -36,15 +43,17 @@ model Column {
   name      String   @unique
   createdAt DateTime @default(now())
   cards     Card[]
+  group     Group    @relation(fields: [groupId], references: [id])
+  groupId   Int
 }
 
 model Card {
   id        Int       @id @default(autoincrement())
   name      String    @unique
-  column    Column    @relation(fields: [groupId], references: [id])
+  column    Column    @relation(fields: [columnId], references: [id])
   comments  Comment[]
   createdAt DateTime  @default(now())
-  groupId   Int
+  columnId  Int
 }
 
 model Team {
