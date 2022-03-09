@@ -1,11 +1,11 @@
 import { BadRequestException, Body, Controller, Get, HttpStatus, NotFoundException, Param, ParseIntPipe, Post } from "@nestjs/common";
-import { ApiResponse } from "@nestjs/swagger";
+import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CardDto } from "src/dtos/card.dto";
 import { CreateCardDto } from "src/dtos/create-card.dto";
 import { HttpExceptionDto } from "src/dtos/http-exception.dto";
 import { CardService } from "./card.service";
 
-
+@ApiTags('cards')
 @Controller('cards')
 export class CardController {
     constructor(private readonly cardService: CardService) {}

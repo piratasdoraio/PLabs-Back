@@ -6,5 +6,4 @@ import { CardService } from './card.service';
     controllers: [],
     providers: [CardService, PrismaService]
 })
-
 export class CardModule {}
