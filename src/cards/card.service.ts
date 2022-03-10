@@ -33,6 +33,9 @@ export class CardService {
         if(!createCardDto) {
             return null;
         }
+        const columId = createCardDto.columnId;
+        const columnExist = await this.prismaService.column.findUnique({where: {id: columId}});
+        if(!columnExist) { return null; }
 
         try {
             const createdCard = await this.prismaService.card.create({
@@ -51,6 +54,16 @@ export class CardService {
         }catch(e) {
             return null;
         }
+    }
+
+    async deleteCard(id: number): Promise<number> {
+        if(!id || typeof id != 'number') {return null;}
+        
+        const deletedCard = await this.prismaService.card.delete({where: {id}});
+
+        if(!deletedCard) {return null;}
+
+        return deletedCard.id;
     }
 
     private mapToDto(card: Card): CardDto {
