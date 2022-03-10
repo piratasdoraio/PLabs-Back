@@ -42,7 +42,6 @@ export class GroupService {
 
     async deleteGroupById(id: number): Promise<number> {
         if(!id) {return null;}
-        
         try {
             const deletedGroup = await this.prismaService.group.delete({where: {id}});
             if(!deletedGroup) {return null;}
