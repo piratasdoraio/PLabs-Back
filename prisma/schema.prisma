@@ -43,6 +43,7 @@ model Column {
   name      String   @unique
   createdAt DateTime @default(now())
   cards     Card[]
+  team      Team[]
   group     Group    @relation(fields: [groupId], references: [id])
   groupId   Int
 }
@@ -61,6 +62,8 @@ model Team {
   name      String         @unique
   users     UsersOnTeams[]
   createdAt DateTime       @default(now())
+  Column    Column         @relation(fields: [columnId], references: [id])
+  columnId  Int
 }
 
 model UsersOnTeams {
