@@ -50,6 +50,16 @@ export default class UserService {
         return this.mapToDto(user);
     }
 
+    async findUserByEmail(email: string): Promise<User | null> {
+        try {
+            const user = await this.prisma.user.findUnique({where: {email: email}});
+            if(!user) { return null; }
+            return user;
+        }catch(e) {
+            return null;
+        }
+    }
+
     async deleteUserById(id: number): Promise<number | null> {
         if(!id) {
             return null;

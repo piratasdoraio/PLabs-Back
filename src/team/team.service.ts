@@ -8,7 +8,7 @@ import { CreateTeamDto } from "src/dtos/create-team.dto";
 export class TeamService {
 
     constructor(private readonly prismaService: PrismaService) {}
-
+ 
     async getTeamById(id: number): Promise<TeamDto> {
         if(!id || typeof id != 'number') {return null;}
 
