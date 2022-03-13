@@ -1,16 +1,19 @@
-import { BadRequestException, Body, Controller, Delete, Get, HttpException, HttpStatus, NotFoundException, Param, ParseIntPipe, Post, Req, UseFilters } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, HttpException, HttpStatus, NotFoundException, Param, ParseIntPipe, Post, Req, UseFilters, UseGuards } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import CreateUserDto from 'src/dtos/create-user.dto';
 import { HttpExceptionDto } from 'src/dtos/http-exception.dto';
 import UserDto from 'src/dtos/user.dto';
+import { AuthService } from 'src/security/auth/auth.service';
 import UserService from 'src/user/user.service';
 
 @ApiTags('users')
 @Controller('users')
 export default class UserController {
 
-    constructor(private readonly userService: UserService) {}
+    constructor(
+        private readonly userService: UserService,
+        ) {}
     
     @Get()
     async getAllUsers(): Promise<User[]> {
@@ -54,4 +57,6 @@ export default class UserController {
         }
         return createdUser;
     }
+
+    
 }

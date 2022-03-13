@@ -5,8 +5,8 @@ import PrismaService from 'src/repositories/prisma.service';
 import BCryptPasswordEncoder from 'src/security/bcrypt.service';
 
 @Module({
-  imports: [],
   controllers: [UserController],
   providers: [UserService, PrismaService, BCryptPasswordEncoder],
+  exports: [UserService]
 })
 export default class UserModule {}
