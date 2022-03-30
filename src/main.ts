@@ -1,3 +1,4 @@
+const mySecret = process.env['DATABASE_URL']
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -15,6 +16,7 @@ async function bootstrap() {
                 .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+const mySecret = process.env['DATABASE_URL']
   app.useGlobalPipes(new ValidationPipe());
   const prismaService: PrismaService = app.get(PrismaService);
   prismaService.enableShutdownHooks(app)

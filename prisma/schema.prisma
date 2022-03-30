@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://admin:1k$%.5=f@147.182.244.185:3306/framedesk-hml"
+  url      = env("DATABASE_URL")
 }
 
 model Comment {
